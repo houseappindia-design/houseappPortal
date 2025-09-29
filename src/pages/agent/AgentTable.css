@@ -1,0 +1,163 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
+/* AgentTable.css */
+.table-wrapper {
+ padding: 24px;
+  font-family: 'Inter', sans-serif;
+  background: var(--bg-light);
+  border-radius: 12px;
+  box-shadow: 0 2px 8px var(--shadow);
+}
+
+.controls {
+    display: flex;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.search-input {
+   width: 260px;
+  padding: 10px 14px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  transition: border-color 0.2s;
+}
+
+
+.search-input:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 2px rgba(79, 70, 229, 0.2);
+}
+
+.btn {
+     padding: 8px 16px;
+  border-radius: 8px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.2s, transform 0.1s;
+}
+
+.btn.primary {
+    background-color: #007bff;
+    color: #fff;
+}
+
+.btn.link {
+    background: none;
+    color: #007bff;
+    padding: 0;
+    margin-right: 8px;
+}
+
+.btn.link.danger {
+    color: #dc3545;
+}
+
+.agent-table {
+  border-collapse: collapse;
+  background: var(--bg-accent);
+  border-radius: 8px;
+  overflow: auto;
+
+}
+
+.agent-table th,
+.agent-table td {
+    padding: 12px;
+    border-bottom: 1px solid var(--border);
+    text-align: left;
+}
+
+
+
+.avatar {
+  width: 40px;
+  height: 40px;
+  object-fit: cover;
+  border-radius: 50%;
+}
+.page-size {
+  margin-left: 8px;
+  padding: 6px;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+}
+.info {
+  margin-bottom: 8px;
+  font-size: 14px;
+  color: #555;
+}
+.pagination {
+  margin-top: 16px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+}
+
+.agent-table th {
+  background-color: var(--bg-light);
+  font-weight: 600;
+}
+
+
+.agent-table tr.dragging {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+
+
+.tag {
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 12px;
+    display: inline-block;
+}
+
+.tag.green {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+.tag.red {
+    background-color: #f8d7da;
+    color: #721c24;
+}
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal {
+    background: #fff;
+    padding: 24px;
+    border-radius: 8px;
+    width: 400px;
+}
+
+.modal label {
+    display: block;
+    margin-top: 12px;
+    font-weight: bold;
+}
+
+.modal input {
+    width: 100%;
+    padding: 8px;
+    margin-top: 4px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.modal-actions {
+    margin-top: 20px;
+    text-align: right;
+}
