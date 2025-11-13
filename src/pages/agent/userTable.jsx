@@ -35,6 +35,9 @@ const UserTable = () => {
   const totalUsers = users?.totalUsers || 0;
   const userList = users?.users || [];
 
+  const filteredUsers = userList.filter(user => user.name && user.name.trim() !== "");
+
+
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [searchText, setSearchText] = useState("");
   const [pageSize, setPageSize] = useState(10);
@@ -164,16 +167,6 @@ const UserTable = () => {
     { title: "Phone", dataIndex: "phone" },
     { title: "Location", dataIndex: "location" },
     {
-      title: "Status",
-      dataIndex: "status",
-      render: (status) =>
-        status === 1 ? (
-          <Tag color="green">Active</Tag>
-        ) : (
-          <Tag color="red">Inactive</Tag>
-        ),
-    },
-    {
       title: "Actions",
       render: (_, record) => (
         <Space>
@@ -254,7 +247,7 @@ const UserTable = () => {
       {/* Table */}
       <Table
         columns={columns}
-        dataSource={userList}
+        dataSource={filteredUsers}
         rowKey="id"
         pagination={{
           current: currentPage,

@@ -9,29 +9,86 @@ const { Option } = Select;
 const WhatsAppAnalytics = () => {
   const dispatch = useDispatch();
   const userState = useSelector((state) => state.interactions);
-  const analytics = userState || { total: 0, page: 1, limit: 10, whatsapp: [], phone: [] };
 
+  const analytics = userState || {
+    total: 0,
+    page: 1,
+    limit: 10,
+    whatsapp: [],
+    phone: [],
+    mapdata: [],
+  };
+
+  // ---------- STATES ----------
   const [currentPage, setCurrentPage] = useState(analytics.page || 1);
   const [pageSize, setPageSize] = useState(analytics.limit || 10);
   const [range, setRange] = useState('today');
+  const [interactionType, setInteractionType] = useState('whatsapp'); // NEW
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
-    console.log(startDate,"startDate")
-    console.log(endDate,"endDate")
+
+  // ---------- API CALL ----------
   useEffect(() => {
-    dispatch(fetchInteractions({ range, page: currentPage, pageSize, startDate, endDate }));
-  }, [dispatch, range, currentPage, pageSize, startDate, endDate]);
+    dispatch(
+      fetchInteractions({
+        range,
+        page: currentPage,
+        pageSize,
+        startDate,
+        endDate,
+        interactionType, // SEND TO API
+      })
+    );
+  }, [
+    dispatch,
+    range,
+    currentPage,
+    pageSize,
+    startDate,
+    endDate,
+    interactionType,
+  ]);
 
-  const combinedData = [
-    ...analytics.whatsapp.map((item, idx) => ({ key: `whatsapp-${idx}`, ...item })),
-  ];
+  // ---------- MERGE DATA ----------
+  let combinedData = [];
 
+  if (interactionType === 'all') {
+    combinedData = [
+      ...(analytics.whatsapp || []).map((item, idx) => ({
+        key: `wp-${idx}`,
+        ...item,
+      })),
+      ...(analytics.phone || []).map((item, idx) => ({
+        key: `ph-${idx}`,
+        ...item,
+      })),
+      ...(analytics.mapdata || []).map((item, idx) => ({
+        key: `map-${idx}`,
+        ...item,
+      })),
+    ];
+  } else if (interactionType === 'whatsapp') {
+    combinedData =
+      (analytics.whatsapp || []).map((item, idx) => ({
+        key: `wp-${idx}`,
+        ...item,
+      })) || [];
+  } else if (interactionType === 'phone') {
+    combinedData =
+      (analytics.phone || []).map((item, idx) => ({
+        key: `ph-${idx}`,
+        ...item,
+      })) || [];
+  } else if (interactionType === 'map') {
+    combinedData =
+      (analytics.mapdata || []).map((item, idx) => ({
+        key: `map-${idx}`,
+        ...item,
+      })) || [];
+  }
+
+  // ---------- TABLE COLUMNS ----------
   const columns = [
-    {
-      title: 'Agent ID',
-      dataIndex: 'agent_id',
-      key: 'agent_id',
-    },
     {
       title: 'Agent Name',
       dataIndex: 'agent_name',
@@ -61,11 +118,6 @@ const WhatsAppAnalytics = () => {
       title: 'Click Type',
       dataIndex: 'click_type',
       key: 'click_type',
-      filters: [
-        { text: 'WhatsApp', value: 'whatsapp' },
-        { text: 'Phone', value: 'phone' },
-      ],
-      onFilter: (value, record) => record.click_type === value,
       render: (text) => text.charAt(0).toUpperCase() + text.slice(1),
     },
     {
@@ -78,17 +130,21 @@ const WhatsAppAnalytics = () => {
     },
   ];
 
+  // ---------- TABLE FOOTER ----------
   const tableFooter = () => {
-    const totalItems = analytics.total || 0;
+    const totalItems = analytics.total || combinedData.length;
     const start = (currentPage - 1) * pageSize + 1;
     const end = Math.min(currentPage * pageSize, totalItems);
+
     return (
       <div style={{ display: 'flex', justifyContent: 'space-between' }}>
         <div>
-          Showing WhatsApp & Phone {start} to {end} of {totalItems} entries
+          Showing {interactionType.toUpperCase()} {start} to {end} of{' '}
+          {totalItems} entries
         </div>
+
         <div>
-          Show&nbsp;
+          Show{' '}
           <Select
             value={pageSize}
             onChange={(size) => {
@@ -103,23 +159,35 @@ const WhatsAppAnalytics = () => {
                 {size}
               </Option>
             ))}
-          </Select>
-          &nbsp;entries
+          </Select>{' '}
+          entries
         </div>
       </div>
     );
   };
 
+  // ---------- UI ----------
   return (
     <div style={{ padding: 24 }}>
       <h2>WhatsApp Interactions</h2>
 
-      {/* Filter Controls */}
-      <div style={{ display: 'flex', gap: 16, marginBottom: 16, alignItems: 'center' }}>
-        {/* Range Dropdown */}
+      {/* FILTER BAR */}
+      <div
+        style={{
+          display: 'flex',
+          gap: 20,
+          marginBottom: 20,
+          alignItems: 'center',
+        }}
+      >
+        {/* Range */}
         <div>
           <span style={{ marginRight: 8 }}>Select Range:</span>
-          <Select value={range} onChange={(val) => setRange(val)} style={{ width: 160 }}>
+          <Select
+            value={range}
+            onChange={(val) => setRange(val)}
+            style={{ width: 160 }}
+          >
             <Option value="today">Today</Option>
             <Option value="7d">7 Days</Option>
             <Option value="weekly">Weekly</Option>
@@ -130,20 +198,41 @@ const WhatsAppAnalytics = () => {
           </Select>
         </div>
 
-        {/* Start-End Date Picker */}
+        {/* FILTER TYPE */}
+        <div>
+          <span style={{ marginRight: 8 }}>Filter By:</span>
+          <Select
+            value={interactionType}
+            onChange={(val) => setInteractionType(val)}
+            style={{ width: 160 }}
+          >
+            <Option value="all">All</Option>
+            <Option value="whatsapp">WhatsApp</Option>
+            <Option value="phone">Phone</Option>
+            <Option value="map">Map</Option>
+          </Select>
+        </div>
+
+        {/* CUSTOM DATES */}
         <div>
           <span style={{ marginRight: 8 }}>Custom Dates:</span>
           <DatePicker.RangePicker
             format="YYYY-MM-DD"
             allowClear
-            value={startDate && endDate ? [dayjs(startDate), dayjs(endDate)] : []}
+            value={
+              startDate && endDate
+                ? [dayjs(startDate), dayjs(endDate)]
+                : []
+            }
             onChange={(dates) => {
-              if (dates && dates.length === 2) {
+              if (dates?.length === 2) {
                 const [start, end] = dates;
+
                 if (dayjs(end).isBefore(start)) {
                   message.error('End date cannot be before start date');
                   return;
                 }
+
                 setStartDate(start.format('YYYY-MM-DD'));
                 setEndDate(end.format('YYYY-MM-DD'));
               } else {
@@ -155,14 +244,14 @@ const WhatsAppAnalytics = () => {
         </div>
       </div>
 
-      {/* Table */}
+      {/* TABLE */}
       <Table
         columns={columns}
         dataSource={combinedData}
         pagination={{
           current: currentPage,
           pageSize,
-          total: analytics.total,
+          total: analytics.total || combinedData.length,
           onChange: (page) => setCurrentPage(page),
           showSizeChanger: false,
           position: ['bottomRight'],

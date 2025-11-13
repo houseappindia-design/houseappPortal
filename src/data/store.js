@@ -11,6 +11,8 @@ import bannerReducer  from './slices/bannerSlice'
 import aboutReducer from './slices/aboutSlice';
 import privacyPolicyReducer from './slices/privacyPolicySlice';
 import termsReducer from './slices/termsSlice';
+import contactReducer from './slices/contactSlice'
+
 
 
 
@@ -29,6 +31,7 @@ export const store = configureStore({
     interactions: interactionsReducer,
     banner:bannerReducer,
     about: aboutReducer,
+    contact:contactReducer,
     privacyPolicy: privacyPolicyReducer,
     terms: termsReducer,
     // other reducers...

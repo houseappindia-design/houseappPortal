@@ -20,13 +20,16 @@ const iconSX = { fontSize: '0.75rem', color: 'inherit', marginLeft: 0, marginRig
 export default function AnalyticEcommerce({ color = 'primary', title, count, percentage, isLoss, extra,textname }) {
   const navigate =useNavigate()
  const navigatorHander = () => {
+  console.log(textname,"textname")
   let history =
        textname === "Users"
       ? "/users"
       : textname === "Agents"
       ? "/agents"
-      : textname === "Whtaspp  Interactions"
+      : textname === "Whatsapp Interactions"
       ? "/whatsapp"
+      : textname === "GoogleMap Interactions"
+      ? "/google-map"
       : textname === "Phone Interactions"
       ? "/phone"
       : textname === "Profile Views"
@@ -34,6 +37,7 @@ export default function AnalyticEcommerce({ color = 'primary', title, count, per
       : textname === "Recently searched"
       ? "/search-activity-log"
       : "/";
+      console.log(history,"whatsapp")
   navigate(history);
 };
 

@@ -9,6 +9,7 @@ const DashboardDefault = Loadable(lazy(() => import('pages/dashboard/default')))
 const PrivacyPolicyPage = Loadable(lazy(() => import('pages/configuration/PrivacyPolicy')));
 const TermsAndConditions = Loadable(lazy(() => import('pages/configuration/termsAndConditions')));
 const AboutUsPage = Loadable(lazy(() => import('pages/configuration/about')));
+const ContactUsPage = Loadable(lazy(() => import('pages/configuration/Contact')));
 const DataTable = Loadable(lazy(() => import('pages/agent/agent')));
 const AgentDetail = Loadable(lazy(() => import('pages/agent/agentdetails')));
 const UserTable = Loadable(lazy(() => import('pages/agent/userTable')));
@@ -23,6 +24,7 @@ const LocalityTableCard = Loadable(lazy(() => import('pages/profile/setting')));
 const HistoryTable = Loadable(lazy(() => import('pages/datatable/agenthistory')));
 const Reviews = Loadable(lazy(() => import('pages/reviews/agentreviews')));
 const WhatsAppAnalytics = Loadable(lazy(() => import('pages/extra-pages/WhatsAppAnalytics')));
+const GoogleAnalytics = Loadable(lazy(() => import('pages/extra-pages/GoogleAnalytics')));
 const PhoneAnalytics = Loadable(lazy(() => import('pages/extra-pages/PhoneAnalytics')));
 const AgentProfileAnalytics = Loadable(lazy(() => import('pages/extra-pages/AgentProfileAnalytics')));
 const SearchActivityLog = Loadable(lazy(() => import('pages/extra-pages/SearchActivityLog')));
@@ -30,6 +32,7 @@ const LocalityViewersPage =Loadable(lazy(() => import('pages/extra-pages/Localit
 const LastLoginPageUser = Loadable(lazy(() => import('pages/extra-pages/LastLoginPageUser')));
 const LastLoginPageAgent =Loadable(lazy(() => import('pages/extra-pages/LastLoginPageAgent')));
 const BannerTable =Loadable(lazy(() => import('pages/banner/Banner')));
+const ExpertHelp = Loadable(lazy(() => import('pages/experthelp/experthelp')));
 // import BannerTable from '../pages/banner/Banner';
 
 
@@ -63,6 +66,10 @@ const allRoutes = [
   {
     path: 'configuration/about-us',
     element: <AboutUsPage />
+  },
+  {
+    path: 'configuration/contact-us',
+    element: <ContactUsPage />
   },
   {
     path: 'agents',
@@ -113,6 +120,10 @@ const allRoutes = [
     path: "whatsapp",
     element: <WhatsAppAnalytics />
   },
+   {
+    path: "google-map",
+    element: <GoogleAnalytics />
+  },
   {
     path: "phone",
     element: <PhoneAnalytics />
@@ -151,6 +162,10 @@ const allRoutes = [
     path:'/locality-search/:id',
     element:<LocalityViewersPage  />
   },
+  {
+    path:'/expert-help',
+    element:<ExpertHelp />
+  }
   
   
 ];

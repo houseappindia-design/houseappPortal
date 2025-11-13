@@ -156,11 +156,33 @@ export const deleteReview=createAsyncThunk(
    }
 )
 
+
+export const fetchAllUserPropertyRequests = createAsyncThunk(
+  'agents/fetchAllUserPropertyRequests',
+  async ({ page = 1, pageSize = 10 }) => {
+    const response = await axios.get(
+      `admin/get_property_requests`,
+      {
+        params: {
+          page,
+          limit: pageSize
+        }
+      }
+    );
+
+    return response.data; // ye reducer me jayega
+  }
+);
+
+
+
+
 const agentSlice = createSlice({
   name: 'agents',
   initialState: {
     agents: [],
     reviews: [],
+    expertHelpData: [],
     agentDetail:null,
     total: 0,
     limit: 10,
@@ -275,7 +297,25 @@ const agentSlice = createSlice({
       .addCase(deleteReview.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message;
-      });
+      })
+            // FETCH PROPERTY REQUESTS (Expert Help Requests)
+      .addCase(fetchAllUserPropertyRequests.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchAllUserPropertyRequests.fulfilled, (state, action) => {
+        state.loading = false;
+          console.log(action.payload,"expet hepl")
+        state.expertHelpData = action.payload.data || []; // Array of requests
+        state.total = action.payload.total || 0;
+        state.page = action.payload.page || 1;
+        state.limit = action.payload.limit || 10;
+      })
+      .addCase(fetchAllUserPropertyRequests.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message || "Failed to fetch property requests";
+      })
+
 
   },
 });

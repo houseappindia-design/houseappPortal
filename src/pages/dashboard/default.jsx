@@ -20,6 +20,8 @@ import ReportAreaChart from 'sections/dashboard/default/ReportAreaChart';
 import UniqueVisitorCard from 'sections/dashboard/default/UniqueVisitorCard';
 import SaleReportCard from 'sections/dashboard/default/SaleReportCard';
 import OrderTable from 'sections/dashboard/default/OrdersTable';
+import LastLoginPage from '../extra-pages/LastLoginPageUser';
+import LastLoginAgentPage from '../extra-pages/LastLoginPageAgent';
 
 // assets
 import UserOutlined from '@ant-design/icons/UserOutlined';
@@ -182,52 +184,7 @@ export default function DashboardDefault() {
           </Grid>
         </Grid>
         <MainCard sx={{ mt: 2 }} content={false}>
-          <List
-            component="nav"
-            sx={{
-              px: 0,
-              py: 0,
-              '& .MuiListItemButton-root': {
-                py: 1.5,
-                px: 2,
-                '& .MuiAvatar-root': avatarSX,
-                '& .MuiListItemSecondaryAction-root': { ...actionSX, position: 'relative' }
-              }
-            }}
-          >
-            {todayUserLogin.length > 0 ? (
-              todayUserLogin.slice(0, 4).map((data, index) => (
-                <ListItem
-                  key={index}
-                  component={ListItemButton}
-                  divider
-                  secondaryAction={
-                    <Stack sx={{ alignItems: 'flex-end' }}>
-                      <Typography variant="h6" color="secondary" noWrap>
-                        {data.Phone}
-                      </Typography>
-                    </Stack>
-                  }
-                >
-                  <ListItemAvatar>
-                    <Avatar sx={{ color: 'success.main', bgcolor: 'success.lighter' }}>
-                      <UserOutlined />
-                    </Avatar>
-                  </ListItemAvatar>
-                  <ListItemText
-                    primary={<Typography variant="subtitle1">{data?.userName}</Typography>}
-                    secondary={new Date(data.login_time).toLocaleString()}
-                  />
-                </ListItem>
-              ))
-            ) : null}
-
-            {todayUserLogin.length >= 4 && (
-              <Button onClick={() => navigate('/user-last-login-history')} fullWidth>
-                View More
-              </Button>
-            )}
-          </List>
+           <LastLoginPage/>
         </MainCard>
       </Grid>
 
@@ -239,50 +196,7 @@ export default function DashboardDefault() {
           </Grid>
         </Grid>
         <MainCard sx={{ mt: 2 }} content={false}>
-          <List
-            component="nav"
-            sx={{
-              px: 0,
-              py: 0,
-              '& .MuiListItemButton-root': {
-                py: 1.5,
-                px: 2,
-                '& .MuiAvatar-root': avatarSX,
-                '& .MuiListItemSecondaryAction-root': { ...actionSX, position: 'relative' }
-              }
-            }}
-          >
-            {todayAgentLogin.slice(0, 4).map((data, index) => (
-              <ListItem
-                key={index}
-                component={ListItemButton}
-                divider
-                secondaryAction={
-                  <Stack sx={{ alignItems: 'flex-end' }}>
-                    <Typography variant="h6" color="secondary" noWrap>
-                      {data.Phone}
-                    </Typography>
-                  </Stack>
-                }
-              >
-                <ListItemAvatar>
-                  <Avatar sx={{ color: 'success.main', bgcolor: 'success.lighter' }}>
-                    <UserOutlined />
-                  </Avatar>
-                </ListItemAvatar>
-                <ListItemText
-                  primary={<Typography variant="subtitle1">{data?.userName}</Typography>}
-                  secondary={new Date(data.login_time).toLocaleString()}
-                />
-              </ListItem>
-            ))}
-
-            {todayAgentLogin.length >= 4 && (
-              <Button onClick={() => navigate('/agents-last-login-history')} fullWidth>
-                View More
-              </Button>
-            )}
-          </List>
+           <LastLoginAgentPage/>
         </MainCard>
       </Grid>
 

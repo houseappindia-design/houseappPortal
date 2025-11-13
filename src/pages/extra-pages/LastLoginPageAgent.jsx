@@ -1,31 +1,74 @@
 import React, { useEffect } from "react";
-import { Table, Spin, Alert } from "antd";
+import { Table, Spin, Alert, Avatar, Typography } from "antd";
+import { UserOutlined } from "@ant-design/icons";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchAdminCounts } from "../../data/slices/notificationSlice";
 
 const LastLoginAgentPage = () => {
   const dispatch = useDispatch();
-  const { loading, error, todayAgentLogin } = useSelector((state) => state.notifications);
+  const { loading, error, todayAgentLogin } = useSelector(
+    (state) => state.notifications
+  );
 
   useEffect(() => {
     dispatch(fetchAdminCounts());
   }, [dispatch]);
 
+  // ✅ Filter valid agents — only show those with all required fields
+  const filteredAgents = (todayAgentLogin || []).filter(
+    (agent) =>
+      agent.agentName &&
+      agent.agentEmail &&
+      agent.agentPhone &&
+      agent.agencyName
+  );
+
   const columns = [
     {
-      title: "Agent Id",
-      dataIndex: "userId",
-      key: "userId",
+      title: "Profile",
+      dataIndex: "agentProfile",
+      key: "agentProfile",
+      width: 80,
+      render: () => (
+        <Avatar
+          src="/default-agent.png"
+          icon={<UserOutlined />}
+          style={{
+            backgroundColor: "#e6f7ff",
+            color: "#1677ff",
+          }}
+        />
+      ),
     },
     {
       title: "Agent Name",
-      dataIndex: "userName",
-      key: "userName",
+      dataIndex: "agentName",
+      key: "agentName",
+      render: (name) => (
+        <Typography.Text strong style={{ fontSize: 15 }}>
+          {name}
+        </Typography.Text>
+      ),
+    },
+    {
+      title: "Email",
+      dataIndex: "agentEmail",
+      key: "agentEmail",
     },
     {
       title: "Phone Number",
-      dataIndex: "Phone",
-      key: "Phone",
+      dataIndex: "agentPhone",
+      key: "agentPhone",
+      render: (phone) => (
+        <Typography.Text style={{ color: "#1677ff", fontWeight: 500 }}>
+          {phone}
+        </Typography.Text>
+      ),
+    },
+    {
+      title: "Agency Name",
+      dataIndex: "agencyName",
+      key: "agencyName",
     },
     {
       title: "Login Time",
@@ -38,20 +81,50 @@ const LastLoginAgentPage = () => {
   ];
 
   return (
-    <div style={{ padding: 24 }}>
-      <h2>Today's Agent Logins</h2>
-
+    <div>
       {loading && <Spin />}
       {error && <Alert type="error" message={error} />}
-      
+
       {!loading && !error && (
         <Table
-          dataSource={todayUserLogin.map((item, idx) => ({ ...item, key: idx }))}
           columns={columns}
-          bordered
-          pagination={{ pageSize: 10 }}
+          dataSource={filteredAgents.map((item, idx) => ({
+            ...item,
+            key: idx,
+          }))}
+          pagination={false}
+          bordered={false}
+          rowKey="agentId"
+          style={{
+            borderRadius: 12,
+            overflow: "hidden",
+            boxShadow: "0 4px 15px rgba(0,0,0,0.08)",
+            background: "#fff",
+            marginTop: 10,
+          }}
         />
       )}
+
+      <style>
+        {`
+          .ant-table-thead > tr > th {
+            background: #f0f2f5 !important;
+            font-weight: 600 !important;
+            padding: 14px !important;
+            font-size: 14px;
+            color: #333;
+          }
+
+          .ant-table-tbody > tr > td {
+            padding: 14px !important;
+            font-size: 14px;
+          }
+
+          .ant-table-tbody > tr:hover > td {
+            background: #f9fafc !important;
+          }
+        `}
+      </style>
     </div>
   );
 };

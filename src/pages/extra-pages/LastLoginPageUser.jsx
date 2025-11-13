@@ -1,31 +1,60 @@
 import React, { useEffect } from "react";
-import { Table, Spin, Alert } from "antd";
+import { Table, Spin, Alert, Avatar, Typography } from "antd";
+import { UserOutlined } from "@ant-design/icons";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchAdminCounts } from "../../data/slices/notificationSlice";
 
 const LastLoginPage = () => {
   const dispatch = useDispatch();
-  const { loading, error, todayUserLogin } = useSelector((state) => state.notifications);
+  const { loading, error, todayUserLogin } = useSelector(
+    (state) => state.notifications
+  );
 
   useEffect(() => {
     dispatch(fetchAdminCounts());
   }, [dispatch]);
 
+  // 🔥 Filter: Only show rows where userName exists
+  const filteredData = todayUserLogin.filter((item) => item.userName);
+
   const columns = [
     {
-      title: "User ID",
-      dataIndex: "userId",
-      key: "userId",
+      title: "Profile",
+      dataIndex: "userProfile",
+      key: "userProfile",
+      width: 80,
+      render: (profile) => {
+        const clean = profile?.replace(/"/g, "");
+        const valid =
+          clean &&
+          clean !== "/image/undefined" &&
+          clean !== "null" &&
+          clean !== null;
+
+        return (
+          <Avatar
+            src={valid ? clean : "/default-user.png"}
+            icon={!valid ? <UserOutlined /> : null}
+          />
+        );
+      },
     },
     {
       title: "User Name",
       dataIndex: "userName",
       key: "userName",
+      render: (name) => <Typography.Text strong>{name}</Typography.Text>,
+    },
+    {
+      title: "Email",
+      dataIndex: "userEmail",
+      key: "userEmail",
+      render: (email) => email?.replace(/"/g, ""),
     },
     {
       title: "Phone Number",
-      dataIndex: "Phone",
-      key: "Phone",
+      dataIndex: "userPhone",
+      key: "userPhone",
     },
     {
       title: "Login Time",
@@ -38,18 +67,28 @@ const LastLoginPage = () => {
   ];
 
   return (
-    <div style={{ padding: 24 }}>
-      <h2>Today's User Logins</h2>
-
+    <div>
       {loading && <Spin />}
       {error && <Alert type="error" message={error} />}
-      
-      {!loading && !error && (
+
+      {/* 🔥 Do NOT show table if no userName rows */}
+      {!loading && !error && filteredData.length > 0 && (
         <Table
-          dataSource={todayUserLogin.map((item, idx) => ({ ...item, key: idx }))}
+          dataSource={filteredData.map((item, idx) => ({
+            ...item,
+            key: idx,
+          }))}
           columns={columns}
-          bordered
-          pagination={{ pageSize: 10 }}
+          bordered={false}
+          pagination={false}
+          rowKey="userId"
+          style={{
+            borderRadius: 12,
+            overflow: "hidden",
+            boxShadow: "0 4px 15px rgba(0,0,0,0.08)",
+            background: "#fff",
+          }}
+          rowClassName={() => "custom-row"}
         />
       )}
     </div>

@@ -81,10 +81,11 @@ const interactionsSlice = createSlice({
         state.loading = true;
       })
       .addCase(fetchInteractions.fulfilled, (state, action) => {
-        const { whatsapp, phone, total, page, limit } = action.payload || {};
+        const { whatsapp, phone,map, total, page, limit } = action.payload || {};
         state.loading = false;
         state.whatsapp = whatsapp;
         state.phone = phone;
+        state.mapdata = map;
         state.total = total;
         state.page = page;
         state.limit = limit;

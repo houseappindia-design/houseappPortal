@@ -41,6 +41,13 @@ const utilities = {
       type: 'item',
       url: '/configuration/terms',
       icon: icons.ProfileOutlined
+    },
+     {
+      id: 'contactus-page',
+      title: 'Contact Us',
+      type: 'item',
+      url: '/configuration/contact-us',
+      icon: icons.ProfileOutlined
     }
   ]
 };
