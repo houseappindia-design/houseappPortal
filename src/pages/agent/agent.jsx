@@ -89,6 +89,7 @@ export default function AgentTable() {
   }, [dispatch, startDate, endDate]);
 
   useEffect(() => {
+    console.log(agents,"datagagagggagg")
     let data = [...agents];
     console.log(data,"task")
     if (searchText) {
