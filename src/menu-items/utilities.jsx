@@ -3,7 +3,8 @@ import {
   SettingOutlined,
   FileTextOutlined,
   InfoCircleOutlined,
-  ProfileOutlined
+  ProfileOutlined,
+  ContactsOutlined
 } from '@ant-design/icons';
 
 // icons
@@ -11,7 +12,8 @@ const icons = {
   SettingOutlined,
   FileTextOutlined,
   InfoCircleOutlined,
-  ProfileOutlined
+  ProfileOutlined,
+  ContactsOutlined
 };
 
 // ==============================|| MENU ITEMS - UTILITIES ||============================== //
@@ -47,7 +49,7 @@ const utilities = {
       title: 'Contact Us',
       type: 'item',
       url: '/configuration/contact-us',
-      icon: icons.ProfileOutlined
+      icon: icons.ContactsOutlined
     }
   ]
 };
