@@ -11,7 +11,7 @@ const BASE_IMAGE_URL = import.meta.env.VITE_IMAGE_URL;
 const { Option } = Select;
 const { Dragger } = Upload;
 
-const UpdateBannerModal = forwardRef(({ data }, ref) => {
+const UpdateScreen = forwardRef(({ data }, ref) => {
   const [open, setOpen] = useState(false);
   const [form] = Form.useForm();
   const [imageUrl, setImageUrl] = useState(null);
@@ -21,34 +21,62 @@ const UpdateBannerModal = forwardRef(({ data }, ref) => {
   const dispatch = useDispatch();
   const { cities, loading } = useSelector((state) => state.location);
 
-  useImperativeHandle(
-    ref,
-    () => ({
+
+
+  useImperativeHandle(ref, () => ({
       open: () => {
-        if (data) {
-          form.resetFields();
-          form.setFieldsValue({
-            title: data.title,
+        setOpen(true);
+      },
+    }));
+
+  // useImperativeHandle(
+  //   ref,
+  //   () => ({
+  //     open: () => {
+  //       if (data) {
+  //         form.resetFields();
+  //         form.setFieldsValue({
+  //           title: data.title,
+  //           link_url: data.link_url,
+  //           position: data.position,
+  //           start_time: moment(data.start_time),
+  //           end_time: moment(data.end_time),
+  //           city_id: data.city_id,
+  //         });
+  //         setStartTime(moment(data.start_time));
+  //         setImageUrl(`${BASE_IMAGE_URL}/${data.image_url}`);
+  //         setImageFile(null);
+  //       } else {
+  //         form.resetFields();
+  //         setImageUrl(null);
+  //         setImageFile(null);
+  //         setStartTime(null);
+  //       }
+  //       setOpen(true);
+  //     },
+  //   }),
+  //   [data, form]
+  // );
+
+
+
+    useEffect(() => {
+      if (open && data) {
+        // Set form values
+        form.setFieldsValue({
+          title: data.title,
             link_url: data.link_url,
             position: data.position,
             start_time: moment(data.start_time),
             end_time: moment(data.end_time),
             city_id: data.city_id,
-          });
-          setStartTime(moment(data.start_time));
-          setImageUrl(`${BASE_IMAGE_URL}/${data.image_url}`);
-          setImageFile(null);
-        } else {
-          form.resetFields();
-          setImageUrl(null);
-          setImageFile(null);
-          setStartTime(null);
-        }
-        setOpen(true);
-      },
-    }),
-    [data, form]
-  );
+        });
+  
+        // Set image preview
+         setImageUrl(`${BASE_IMAGE_URL}/${data.image_url}`);
+        setImageFile(null);
+      }
+    }, [open, data]);
 
   const handleImageUpload = (info) => {
     const file = info.fileList[info.fileList.length - 1]?.originFileObj;
@@ -255,4 +283,4 @@ const UpdateBannerModal = forwardRef(({ data }, ref) => {
   );
 });
 
-export default UpdateBannerModal;
+export default UpdateScreen;

@@ -27,7 +27,7 @@ export const fetchAllBanners = createAsyncThunk(
   'banners/fetchAll',
   async (_, thunkAPI) => {
     try {
-      const res = await axios.get(`admin/banners`);
+      const res = await axios.get(`${BASE_IMAGE_URL}/admin/banners`);
       // Log full response once
       console.log(res.data, "Response from fetchAllBanners");
       // Return final array of banners directly
@@ -43,7 +43,7 @@ export const fetchAllBanners = createAsyncThunk(
 // Fetch a single banner
 export const fetchSingleBanner = createAsyncThunk('banners/fetchSingle', async (id, thunkAPI) => {
   try {
-    const res = await axios.get(`admin/banner/${id}`);
+    const res = await axios.get(`${BASE_IMAGE_URL}/admin/banner/${id}`);
     return res.data.data;
   } catch (err) {
     return thunkAPI.rejectWithValue(err.response.data.message);
@@ -52,7 +52,7 @@ export const fetchSingleBanner = createAsyncThunk('banners/fetchSingle', async (
 
 export const updateBannerByID = createAsyncThunk('banners/update', async ({ formData, id }, thunkAPI) => {
   try {
-    const res = await axioss.patch(`http://localhost:8000/v1/auth/admin/banners/${id}`, formData, {
+    const res = await axioss.patch(`${BASE_IMAGE_URL}/v1/auth/admin/banners/${id}`, formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
       },
@@ -66,7 +66,7 @@ export const updateBannerByID = createAsyncThunk('banners/update', async ({ form
 
 export const deleteBanner = createAsyncThunk('banners/delete', async (id, thunkAPI) => {
   try {
-    await axios.delete(`admin/banners/${id}`);
+    await axios.delete(`${BASE_IMAGE_URL}/admin/banners/${id}`);
     return id; // sirf id return karenge state se remove karne ke liye
   } catch (err) {
     return thunkAPI.rejectWithValue(err.response?.data?.message || 'Delete failed');

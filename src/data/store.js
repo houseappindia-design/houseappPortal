@@ -12,6 +12,7 @@ import aboutReducer from './slices/aboutSlice';
 import privacyPolicyReducer from './slices/privacyPolicySlice';
 import termsReducer from './slices/termsSlice';
 import contactReducer from './slices/contactSlice'
+import loginscreenReducer from './slices/loginscreenSlice';
 
 
 
@@ -34,6 +35,7 @@ export const store = configureStore({
     contact:contactReducer,
     privacyPolicy: privacyPolicyReducer,
     terms: termsReducer,
+    loginscreen: loginscreenReducer,
     // other reducers...
   },
 });

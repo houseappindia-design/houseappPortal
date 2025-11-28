@@ -33,6 +33,8 @@ const LastLoginPageUser = Loadable(lazy(() => import('pages/extra-pages/LastLogi
 const LastLoginPageAgent =Loadable(lazy(() => import('pages/extra-pages/LastLoginPageAgent')));
 const BannerTable =Loadable(lazy(() => import('pages/banner/Banner')));
 const ExpertHelp = Loadable(lazy(() => import('pages/experthelp/experthelp')));
+const Loginscreen =Loadable(lazy(() => import('pages/loginscreen/Loginscreen')));
+
 // import BannerTable from '../pages/banner/Banner';
 
 
@@ -165,6 +167,10 @@ const allRoutes = [
   {
     path:'/expert-help',
     element:<ExpertHelp />
+  },
+   {
+    path:'/login-screen/logo',
+    element:<Loginscreen />
   }
   
   

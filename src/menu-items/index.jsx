@@ -9,13 +9,14 @@ import employeesMenu from './employee';
 import Review from './review';
 import bannerMenu from './banner';
 import GetExpertHelp from './GetExpertHelp'
+import loginScreenMenu from './loginScreenMenu';
 
 // ==============================|| MENU ITEMS ||============================== //
 let role=window.localStorage.getItem("role")
 
 
 const menuItems = {
-  items: role==="administrator"?[dashboard,agentsMenu,usersMenu,employeesMenu,Review,bannerMenu,GetExpertHelp, support,configuration]:[agentsMenu]
+  items: role==="administrator"?[dashboard,agentsMenu,usersMenu,employeesMenu,Review,bannerMenu,loginScreenMenu,GetExpertHelp, support,configuration]:[agentsMenu]
 };
 
 
